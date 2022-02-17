@@ -1,15 +1,11 @@
 /* eslint-disable no-console */
 const mongoose = require('mongoose');
 
-const MONGODB_URI = process.env.NODE_ENV === 'test'
-  ? process.env.MONGODB_URI_TEST
-  : process.env.MONGODB_URI;
-
 module.exports = {
-  connect: () => {
+  connect: async (uri) => {
     // Connecting to the database
     mongoose
-      .connect(MONGODB_URI, {
+      .connect(uri, {
         useNewUrlParser: true,
         useUnifiedTopology: true
       })
