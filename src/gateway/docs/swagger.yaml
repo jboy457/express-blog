@@ -1,7 +1,5 @@
 openapi: '3.0.0'
 servers:
-  - description: HTTPS
-    url: https://expressblogapi.herokuapp.com/api/v1
   - description: HTTP
     url: http://localhost:3000/api/v1
 info:
