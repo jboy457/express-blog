@@ -1,0 +1,381 @@
+openapi: '3.0.0'
+servers:
+  - description: HTTPS
+    url: https://expressblogapi.herokuapp.com/api/v1
+  - description: HTTP
+    url: http://localhost:3000/api/v1
+info:
+  description: This API represents the core Express Blog. See info on verbs here https://restfulapi.net/http-methods/
+
+  version: '1.0'
+  title: Express Blog API
+  contact:
+    email: express@blog.com
+
+
+# ----------------- Tags in the system ------------------ #
+tags:
+  - name: User
+    description: This endpoint provides information about an user service
+  - name: Post
+    description: This endpoint provides information about an post service
+
+
+paths:
+  /user/register:
+    post:
+      tags:
+        - User
+      summary: Create a user account
+      description: Create a user account
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CreateUser'
+
+      responses:
+        '201':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessObj'
+
+        '409':
+          description: User Already Exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '415':
+          description: Unsupported Image type. Only accepts JPEG, JPG, PNG
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+        default:
+          description: An error occured
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /user/login:
+    post:
+      tags:
+        - User
+      summary: Authenticate a user account
+      description: Authenticate a user account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLogin'
+
+      responses:
+        '200':
+          description: User successfully authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessObj'
+
+        '401':
+          description: Invalid Email and Password
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+        default:
+          description: An error occured
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /post:
+    post:
+      tags:
+        - Post
+      summary: Create a post
+      description: Create a post
+      parameters:
+        - $ref: '#/components/parameters/token'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CreatePost'
+
+      responses:
+        '201':
+          description: Post successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessObj'
+        '415':
+          description: Unsupported Image type. Only accepts JPEG, JPG, PNG
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized User. Please login and try again
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+        default:
+          description: An error occured
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      tags:
+        - Post
+      summary: Get all post
+      description: Get all post
+      parameters:
+        - $ref: '#/components/parameters/token'
+        - $ref: '#/components/parameters/pageNo'
+        - $ref: '#/components/parameters/perPage'
+      responses:
+        '200':
+          description: Post successfully fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessObj'
+        '401':
+          description: Unauthorized User. Please login and try again
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+        default:
+          description: An error occured
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /post/{id}:
+    get:
+      tags:
+        - Post
+      summary: Get a post
+      description: Get a post
+      parameters:
+        - $ref: '#/components/parameters/token'
+        - $ref: '#/components/parameters/postId'
+      responses:
+        '200':
+          description: Post successfully fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessObj'
+        '404':
+          description: Post not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized User. Please login and try again
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags:
+        - Post
+      summary: Update a post
+      description: Update a post
+      parameters:
+        - $ref: '#/components/parameters/token'
+        - $ref: '#/components/parameters/postId'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CreatePost'
+      responses:
+        '200':
+          description: Post successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessObj'
+        '404':
+          description: Post not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized User. Please login and try again
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+        default:
+          description: An error occured
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+        - Post
+      summary: Delete a post
+      description: Delete a post
+      parameters:
+        - $ref: '#/components/parameters/token'
+        - $ref: '#/components/parameters/postId'
+      responses:
+        '200':
+          description: Post successfully deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessObj'
+        '404':
+          description: Post not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized User. Please login and try again
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+        default:
+          description: An error occured
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+
+
+# --------------- Component in the system -------------- #
+components: 
+  parameters:
+    # For Access Control
+    token:
+      in: header
+      name: x-auth-token
+      required: true
+      schema:
+        type: string
+    # For postId Control
+    postId:
+      in: path
+      name: id
+      required: true
+      schema:
+        type: string
+    # For postId Control
+    perPage:
+      in: query
+      name: perPage
+      schema:
+        type: number
+    # For postId Control
+    pageNo:
+      in: query
+      name: pageNo
+      schema:
+        type: string
+
+  schemas: 
+    SuccessObj: 
+      type: object
+      properties: 
+        status: 
+          type: string
+        message: 
+          type: string
+        data:
+          type: object
+    CreateUser:
+      type: object
+      properties: 
+        name: 
+          type: string
+        email: 
+          type: string
+        password: 
+          type: string
+        image:
+          type: string
+          format: binary
+    CreatePost:
+      type: object
+      properties: 
+        title: 
+          type: string
+        description: 
+          type: string
+        image:
+          type: string
+          format: binary
+    UserLogin:
+      type: object
+      properties: 
+        email: 
+          type: string
+        password: 
+          type: string
+    Error:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        
