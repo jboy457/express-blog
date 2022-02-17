@@ -25,7 +25,7 @@ class PostService {
     const { params, user } = req;
     const post = await PostRepository.findById(params.id);
     if (!post) return Response.service(404, 'Post not found');
-    if (post.userId === user._id) return Response.service('401', 'Post cannot be deleted');
+    if (post.userId.toString() !== user._id.toString()) return Response.service('401', 'Post cannot be deleted');
     await post.remove();
     return Response.service(200, 'Successfully deleted post');
   }
@@ -36,13 +36,13 @@ class PostService {
     } = req;
     const post = await PostRepository.findById(params.id);
     if (!post) return Response.service(404, 'Post not found');
-    if (post.userId === user._id) return Response.service('401', 'Post cannot be updated');
+    if (post.userId.toString() !== user._id.toString()) return Response.service('401', 'Post cannot be updated');
     if (files) {
       body.image = await Upload.toServer(files.image, 'post', post.image);
 
       if (!body.image) return Response.service(415, 'Unsupported Image type. Only accepts JPEG, JPG, PNG');
     }
-    await post.update(body);
+    await post.updateOne(body);
     return Response.service(200, 'Successfully updated post');
   }
 
