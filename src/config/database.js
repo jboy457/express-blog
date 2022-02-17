@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 const mongoose = require('mongoose');
+const logger = require('./logger');
 
 module.exports = {
   connect: async (uri) => {
@@ -10,11 +11,11 @@ module.exports = {
         useUnifiedTopology: true
       })
       .then(() => {
-        console.log('Successfully connected to database');
+        logger.info('Successfully connected to database');
       })
       .catch((error) => {
-        console.log('database connection failed. exiting now...');
-        console.error(error);
+        logger.info('database connection failed. exiting now...');
+        logger.error(error);
         process.exit(1);
       });
   },
