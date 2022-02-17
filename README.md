@@ -20,6 +20,22 @@ npm install
 ```
 npm start
 ```
+
+- Build and run the project in development
+```
+npm run dev
+```
+
+- To Run all test cases
+```
+npm test or npm run test
+```
+
+- To Run a single test cases
+```
+npm run test:only <test file name>
+```
+
 - API Document endpoints
 
   swagger-ui  Endpoint : http://localhost:3000/api/v1/docs 
