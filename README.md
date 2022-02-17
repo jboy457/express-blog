@@ -15,6 +15,9 @@ git clone  <git lab template url> <project_name>
 cd <project_name>
 npm install
 ```
+- Create a .env file in the project directory
+- Copy all key param in .env.dev into .env and update them with values
+
 - Build and run the project
 ```
 npm start
