@@ -11,7 +11,7 @@ class UserService {
     if (user) return Response.service(409, 'User already exist');
     const hashPassword = await Hash.create(password);
     const image = await Upload.toServer(req.files.image, 'profile');
-    if (!image) return Response.service(415, 'Unsopported Image type. Only accepts JPEG, JPG, PNG');
+    if (!image) return Response.service(415, 'Unsupported Image type. Only accepts JPEG, JPG, PNG');
     const newUser = await UserRepository.createUser({
       name, email, image, password: hashPassword
     });
