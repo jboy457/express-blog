@@ -21,7 +21,9 @@ class PostRepository {
   }
 
   static async findAll(limit = 10, pageNo) {
-    const post = await Post.find({ limit, skip: pageNo * (limit - 1) });
+    const post = await Post.find()
+      .limit(limit)
+      .skip(limit * (pageNo - 1));
     return post;
   }
 }
