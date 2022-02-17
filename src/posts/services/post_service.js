@@ -5,6 +5,7 @@ const { PostRepository } = require('../repositories');
 class PostService {
   static async create(req) {
     const { body, files, user } = req;
+    if (!files) return Response.service(422, 'Image is requierd');
     const image = await Upload.toServer(files.image, 'post');
     if (!image) return Response.service(415, 'Unsupported Image type. Only accepts JPEG, JPG, PNG');
     const postToCreate = {

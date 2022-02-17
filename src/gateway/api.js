@@ -10,7 +10,7 @@ const { isLoggedIn } = require('./middlewares');
 // API Documentation
 const docs = yaml.load(`${__dirname}/docs/swagger.yaml`);
 apis.use('/docs', swaggerUi.serve, swaggerUi.setup(docs));
-apis.use('/user', UserMicroService.router);
-apis.use('/post', isLoggedIn, PostMicroService.router);
+apis.use('/users', UserMicroService.router);
+apis.use('/posts', isLoggedIn, PostMicroService.router);
 
 module.exports = { apis };

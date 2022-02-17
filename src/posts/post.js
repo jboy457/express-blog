@@ -6,7 +6,7 @@ const {
 } = require('./controllers');
 const { CreatePostSchema, PostByIdSchema, UpdatePostSchema } = require('./validations');
 
-router.post('/', Validate(CreatePostSchema, true), createPost);
+router.post('/', Validate(CreatePostSchema), createPost);
 router.get('/', getAllPost);
 router.get('/:id', Validate(PostByIdSchema), getPost);
 router.put('/:id', Validate(UpdatePostSchema), updateUserPost);
