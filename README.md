@@ -1,7 +1,5 @@
 # express-blog
 
-
-# Pre-requisites
 - Install [Node.js](https://nodejs.org/en/) version 8.0.0
 
 
