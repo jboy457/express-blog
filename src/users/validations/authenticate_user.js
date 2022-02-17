@@ -10,6 +10,6 @@ const AuthenicateSchema = Joi.object({
       .max(15)
       .required()
   })
-});
+}).options({ allowUnknown: true });
 
 module.exports = { AuthenicateSchema };
