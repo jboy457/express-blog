@@ -20,6 +20,6 @@ app.use(
 );
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
-app.use(apis);
+app.use('/api/v1', apis);
 
 module.exports = app;
