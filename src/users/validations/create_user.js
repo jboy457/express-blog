@@ -19,6 +19,6 @@ const CreateUserSchema = Joi.object({
       .messages({ 'object.base': '{#label} accept a single file' })
       .label('image')
   }).messages({ 'object.base': '{#label} is required' }).label('image')
-});
+}).options({ allowUnknown: true });
 
 module.exports = { CreateUserSchema };

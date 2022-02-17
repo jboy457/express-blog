@@ -2,17 +2,13 @@ const Joi = require('joi');
 const { logger } = require('../config');
 const { Response } = require('./response');
 
-function Validate(schema, hasFile) {
+function Validate(schema) {
   return async (req, res, next) => {
     if (!Joi.isSchema(schema)) {
       logger.error('Invalid joi schema');
     }
     try {
-      if (hasFile !== undefined) {
-        await schema.validateAsync({ body: req.body, files: req.files });
-      } else {
-        await schema.validateAsync({ body: req.body });
-      }
+      await schema.validateAsync(req);
     } catch (e) {
       const validationErrors = e.details.map((errorDetail) => ({
         key: errorDetail.context.key,

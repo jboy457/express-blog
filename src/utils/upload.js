@@ -20,7 +20,7 @@ class Upload {
         }
       });
       if (previousFile != null) {
-        fs.unlinkSync(`./uploads${previousFile}`);
+        fs.unlinkSync(`./uploads/${previousFile}`);
       }
       return fileName;
     } catch (err) {
