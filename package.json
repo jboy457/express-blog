@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "NODE_ENV=test jest --runInBand  --testTimeout=10000",
+    "test:only": "NODE_ENV=test jest",
     "start": "NODE_ENV=production node index.js",
     "dev": "NODE_ENV=development nodemon index.js",
     "lint:ci": "eslint .",
