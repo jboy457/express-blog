@@ -3,6 +3,7 @@ const request = require('supertest');
 const app = require('../../src/app');
 const { connect, disconnect } = require('../../src/config');
 const { User } = require('../../src/users/models');
+const { deleteUpload } = require('../utils/remove_upload');
 
 const testImage = `${__dirname}/../assets/test_image.jpeg`;
 const invalidImage = `${__dirname}/../assets/invalid_image.webp`;
@@ -90,5 +91,6 @@ describe('--- Register User Test ---', () => {
     expect(response.statusCode).toEqual(201);
     expect(response.body.status).toEqual('success');
     expect(response.body.data.email).toEqual(validTestCase.email);
+    await deleteUpload(response.body.data.image);
   });
 });
