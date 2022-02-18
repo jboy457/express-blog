@@ -5,6 +5,7 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const fileUpload = require('express-fileupload');
+const path = require('path');
 
 const { apis } = require('./gateway');
 
@@ -13,6 +14,7 @@ const app = express();
 app.use(cors());
 app.use(compression());
 app.use(express.json());
+app.use(express.static(path.resolve('./uploads')));
 app.use(
   fileUpload({
     createParentPath: true
