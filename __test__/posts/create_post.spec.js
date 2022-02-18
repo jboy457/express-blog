@@ -1,9 +1,10 @@
 /* eslint-disable no-undef */
 const request = require('supertest');
 const app = require('../../src/app');
-const { connect, disconnect } = require('../../src/config');
+const { connect, disconnect, redisClient } = require('../../src/config');
 const { Post } = require('../../src/posts/models');
 const { User } = require('../../src/users/models');
+const { deleteUpload } = require('../utils/remove_upload');
 
 const testImage = `${__dirname}/../assets/test_image.jpeg`;
 const invalidImage = `${__dirname}/../assets/invalid_image.webp`;
@@ -30,6 +31,7 @@ const validLoginTestCase = {
 
 beforeAll(async () => {
   await connect(process.env.MONGODB_URI_TEST);
+  await redisClient.connect();
   await User.create(userTestCase);
   const response = await request(app)
     .post('/api/v1/users/login').send(validLoginTestCase);
@@ -41,6 +43,7 @@ afterAll(async () => {
     await User.deleteMany();
     await Post.deleteMany();
     await disconnect();
+    await redisClient.disconnect();
   } catch (error) {
     console.log(error);
   }
@@ -94,5 +97,6 @@ describe('--- Create User Post ---', () => {
     expect(response.statusCode).toEqual(201);
     expect(response.body.status).toEqual('success');
     expect(response.body.data.title).toEqual(testCase.title);
+    await deleteUpload(response.body.data.image);
   });
 });

@@ -2,7 +2,7 @@
 /* eslint-disable no-undef */
 const request = require('supertest');
 const app = require('../../src/app');
-const { connect, disconnect } = require('../../src/config');
+const { connect, disconnect, redisClient } = require('../../src/config');
 const { Post } = require('../../src/posts/models');
 const { User } = require('../../src/users/models');
 
@@ -81,6 +81,7 @@ const postTestCase = [
 
 beforeAll(async () => {
   await connect(process.env.MONGODB_URI_TEST);
+  await redisClient.connect();
   await User.create(userTestCase);
   await Post.insertMany(postTestCase);
   const response = await request(app)
@@ -92,6 +93,7 @@ afterAll(async () => {
   try {
     await User.deleteMany();
     await Post.deleteMany();
+    await redisClient.disconnect();
     await disconnect();
   } catch (error) {
     console.log(error);
