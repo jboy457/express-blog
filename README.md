@@ -25,8 +25,8 @@ npm start
 ```
 npm run dev
 ```
-
-- To Run all test cases
+Note that the above command will only work if you have nodemon installed globally on your system
+- To Run all test cases.
 ```
 npm test or npm run test
 ```
