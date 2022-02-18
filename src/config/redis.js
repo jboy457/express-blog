@@ -3,8 +3,6 @@ const logger = require('./logger');
 
 const redisClient = redis.createClient();
 
-redisClient.connect();
-
 redisClient.on('connect', () => {
   logger.info('Successfully connected to redis!!');
 });
